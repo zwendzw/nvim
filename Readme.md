@@ -13,8 +13,10 @@ git clone https://github.com/zhiwenwang/nvim ~/.config/nvim
 
 Now you should [ Install vim_plug ](https://github.com/junegunn/vim-plug)
 ,Download plug.vim and put it in the "autoload" directory.
-
-```curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs \https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim```
+```sh
+curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+```
 
 Start neovim in terminal
 
