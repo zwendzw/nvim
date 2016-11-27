@@ -92,7 +92,13 @@ set lazyredraw
 color gruvbox
 " color dracula
 
+"set status line
+set laststatus=2
+
+set modelines=0		" CVE-2007-2438
 let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
+let g:python_host_prog = '/usr/local/bin/python2'
+let g:python3_host_prog = '/usr/local/bin/python3'
 "align
 vmap <C-a> <Plug>(EasyAlign)
 nmap <C-a> <Plug>(EasyAlign)
@@ -127,7 +133,7 @@ nnoremap <silent> <Leader>k {
 " silent! map <C-\> <plug>NERDTreeTabsToggle<CR>
 nnoremap <silent> <F1> :bp!<CR>
 nnoremap <silent> <F2> :bn!<CR>
-nnoremap <silent> <C-\> :NERDTreeFind<CR>:vertical<CR>  
+nnoremap <silent> <C-\> :NERDTreeFind<CR>:vertical<CR>
 " which will move us around by functions
 autocmd BufNewFile,BufRead *.js.erb set ft=javascript.eruby
 autocmd BufNewFile,BufRead *.html.erb set ft=html.eruby
@@ -143,8 +149,6 @@ autocmd FileType rspec map <buffer> <Leader>j }
 autocmd FileType rspec map <buffer> <Leader>k {
 autocmd FileType javascript map <buffer> <Leader>k }
 
-"set status line
-set laststatus=2
 " enable powerline-fonts
 let g:airline_theme='base16'
 let g:airline_powerline_fonts=1
@@ -183,7 +187,6 @@ let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 let g:UltiSnipsEditSplit="vertical"
 " let g:UltiSnipsSnippetsDir = "~/.config/nvim/UltiSnips"
 " Configuration file for vim
-set modelines=0		" CVE-2007-2438
 
 " Don't write backup file if vim is being called by "crontab -e"
 au BufWrite /private/tmp/crontab.* set nowritebackup nobackup
@@ -247,6 +250,9 @@ nnoremap <F5> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 nnoremap <silent> <F3> :TagbarToggle<CR>
 
 nmap <silent> <C-L>  <Plug>GoldenViewSplit
+
+let g:instant_markdown_open_to_the_world = 1
+
 
 "開啟時回復上次關閉的位置
 if has("autocmd")
