@@ -20,6 +20,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'scrooloose/nerdtree'
 Plug 'jistr/vim-nerdtree-tabs'
+Plug 'ryanoasis/vim-devicons'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'zhaocai/GoldenView.Vim'
 Plug 'vim-ruby/vim-ruby'
@@ -91,12 +92,14 @@ set lazyredraw
 " set theme
 color gruvbox
 " color dracula
+set guifont=Droid\ Sans\ Mono\ for\ Powerline\ Plus\ Nerd\ File\ Types:h11
+set encoding=utf-8
 
 "set status line
 set laststatus=2
 
 set modelines=0		" CVE-2007-2438
-let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
+" let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
 let g:python_host_prog = '/usr/local/bin/python2'
 let g:python3_host_prog = '/usr/local/bin/python3'
 "align
@@ -114,11 +117,6 @@ nnoremap pp "+p
 nnoremap pP "+P
 vnoremap pp "+p
 vnoremap PP "+P
-" 移動視窗
-nnoremap <c-j> <c-w>j
-nnoremap <c-k> <c-w>k
-nnoremap <c-h> <c-w>h
-nnoremap <c-l> <c-w>l
 " 快速跳到第N行, ex: 12<enter>, enter跳至最後一行, <c_o>返回
 nnoremap <CR> G
 " insert_mode C-l將游標移至最後"
@@ -150,7 +148,7 @@ autocmd FileType rspec map <buffer> <Leader>k {
 autocmd FileType javascript map <buffer> <Leader>k }
 
 " enable powerline-fonts
-let g:airline_theme='base16'
+let g:airline_theme='murmur'
 let g:airline_powerline_fonts=1
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#buffer_nr_show=1
@@ -164,17 +162,16 @@ let delimitMate_expand_space = 1
 let g:NERDTreeWinSize = 30
 
 " 開啟ag
-let g:ackprg = 'ag --nogroup --nocolor'
-" C_p 開啟搜尋
-nnoremap <C-p> :Files<CR>
+" let g:ackprg = 'ag --nogroup --nocolor'
+" C_f 開啟搜尋
 " -------------
+nnoremap <C-f> :Files<CR>
 " 進階功能
-" 使用rg
-" set grepprg=rg\ --vimgrep
 " ag進階搜尋內文
-nnoremap <C-S-f> :Agu<CR>
+let g:ackprg = 'ag --vimgrep'
+nnoremap <C-f>f :Agu<CR>
 command! -bang -nargs=* Agu call fzf#vim#ag(<q-args>, '--skip-vcs-ignores', {'down': '~40%'})
-let g:aC_working_path_mode="rc"
+let g:ag_working_path_mode="r"
 " -------------
 " \q to toggle quickfix window (where you have stuff like Ag)" ultisnips
 " \oq to open it back up (rare)
@@ -186,7 +183,6 @@ let g:UltiSnipsJumpForwardTrigger="<c-j>"
 let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 let g:UltiSnipsEditSplit="vertical"
 " let g:UltiSnipsSnippetsDir = "~/.config/nvim/UltiSnips"
-" Configuration file for vim
 
 " Don't write backup file if vim is being called by "crontab -e"
 au BufWrite /private/tmp/crontab.* set nowritebackup nobackup
@@ -248,10 +244,6 @@ nnoremap <F5> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 
 "F3開啟tagbar
 nnoremap <silent> <F3> :TagbarToggle<CR>
-
-nmap <silent> <C-L>  <Plug>GoldenViewSplit
-
-let g:instant_markdown_open_to_the_world = 1
 
 
 "開啟時回復上次關閉的位置
