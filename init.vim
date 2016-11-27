@@ -10,6 +10,13 @@ set shell=/bin/bash
 " remove change the following statements
 "set nocompatible	" Use Vim defaults instead of 100% vi compatibility, not
 "in  neoVim
+"Autoinstall vim-plug {{{
+if empty(glob('~/.nvim/autoload/plug.vim'))
+  silent !curl -fLo ~/.nvim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall
+endif
+" }}}
 
 call plug#begin('~/.vim/plugged')
 
@@ -80,7 +87,7 @@ set number " 顯示數字
 set mouse=nv
 "Seting split window
 set splitbelow
-set splitright
+" set splitright
 " 開啟tab
 " nmap <Leader>tn :tabnew<return>
 " Setting color
@@ -254,3 +261,16 @@ if has("autocmd")
         \ endif
 endif
 
+let g:goldenview__enable_default_mapping = 0
+
+" 1. split to tiled windows
+nmap <silent> <F7>  <Plug>GoldenViewSplit
+
+" 2. quickly switch current window with the main pane
+" and toggle back
+nmap <silent> <F8>   <Plug>GoldenViewSwitchMain
+nmap <silent> <F8><F8> <Plug>GoldenViewSwitchToggle
+
+" 3. jump to next and previous window
+nmap <silent> <F9>  <Plug>GoldenViewNext
+nmap <silent> <F10>  <Plug>GoldenViewPrevious
