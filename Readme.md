@@ -8,6 +8,9 @@ if your init.vim have softlink, please delete the file, and put this init.vim in
 ```
 git clone https://github.com/zhiwenwang/nvim ~/.config/nvim
 ```
+
+* start nvim you will see many error, but don't worry.
+
 Now you should [ Install vim_plug ](https://github.com/junegunn/vim-plug)
 ,Download plug.vim and put it in the "autoload" directory.
 
