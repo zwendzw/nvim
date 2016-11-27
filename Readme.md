@@ -11,10 +11,7 @@ Now you should [ Install vim_plug ](https://github.com/junegunn/vim-plug)
 
 Start neovim in terminal
 
-$
-```
-nvim
-```
+$ ```nvim```
 
 then
 
