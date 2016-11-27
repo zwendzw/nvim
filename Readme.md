@@ -3,6 +3,7 @@
 First step:  [Installing Neovim](https://github.com/neovim/neovim/wiki/Installing-Neovim)
 
 And clone this .vim file to your nvim folder
+if your init.vim have softlink, please delete the file, and put this init.vim in the directory.
 
 ```
 git clone https://github.com/zhiwenwang/nvim ~/.config/nvim
