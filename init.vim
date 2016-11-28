@@ -13,7 +13,7 @@ set shell=/bin/bash
 "Autoinstall vim-plug {{{
 if empty(glob('~/.nvim/autoload/plug.vim'))
   silent !curl -fLo ~/.nvim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall
 endif
 " }}}
@@ -34,6 +34,7 @@ Plug 'vim-ruby/vim-ruby'
 Plug 'tpope/vim-rails'
 Plug 'ap/vim-css-color'
 Plug 'matze/vim-move'
+Plug 'nathanaelkane/vim-indent-guides'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-surround'
 Plug 'jiangmiao/auto-pairs'
@@ -110,8 +111,8 @@ set modelines=0		" CVE-2007-2438
 let g:python_host_prog = '/usr/local/bin/python2'
 let g:python3_host_prog = '/usr/local/bin/python3'
 "align
-vmap <C-a> <Plug>(EasyAlign)
-nmap <C-a> <Plug>(EasyAlign)
+vmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
 "最後輸入
 nnoremap gV `[v`]
 " keymap start
@@ -132,6 +133,7 @@ noremap <silent> <C-s> :update<CR>
 vnoremap <silent> <C-s> <C-C>:update<CR>
 inoremap <silent> <C-s> <C-O>:update<CR>
 
+nmap <silent> <leader>n :noh<CR>
 " move up/down quickly by using leader-j, leader-k
 nnoremap <silent> <Leader>j }
 nnoremap <silent> <Leader>k {
@@ -208,43 +210,61 @@ let g:deoplete#enable_at_startup = 1
 "move line use vim-move, C-k ↑, C-j ↓
 let g:move_key_modifier = 'C'
 
-" \# Surround a word with #{ruby interpolation}
-map \# ysiw#
-vmap \# c#{<C-R>"}<ESC>"}
+" <leader># Surround a word with #{ruby interpolation}
+map <leader>3 ysiw#
+vmap <leader>3 c#{<C-R>"}<ESC>"}
 
-" \" Surround a word with "quotes
-map \" ysiw"
-vmap \" c"<C-R>""<ESC>
+" <leader>'' Surround a word with "quotes
+map <leader>'' ysiw"
+vmap <leader>'' c"<C-R>""<ESC>
 
-" \' Surround a word with 'single quotes'
-map \' ysiw'
-vmap \' c'<C-R>"'<ESC>
+" <leader>' Surround a word with 'single quotes'
+map <leader>' ysiw'
+vmap <leader>' c'<C-R>"'<ESC>
 
-" \) or \( Surround a word with (parens)
+" <leader>) or <leader>( Surround a word with (parens)
 " The difference is in whether a space is put in
-map \( ysiw(
-map \) ysiw)
-vmap \( c( <C-R>" )<ESC>
-vmap \) c(<C-R>")<ESC>
+map <leader>( ysiw(
+map <leader>) ysiw)
+vmap <leader>( c( <C-R>" )<ESC>
+vmap <leader>) c(<C-R>")<ESC>
 
-" \[ Surround a word with [brackets]
-map \] ysiw]
-map \[ ysiw[
-vmap \[ c[ <C-R>" ]<ESC>
-vmap \] c[<C-R>"]<ESC>
+" <leader>[ Surround a word with [brackets]
+map <leader>] ysiw]
+map <leader>[ ysiw[
+vmap <leader>[ c[ <C-R>" ]<ESC>
+vmap <leader>] c[<C-R>"]<ESC>
 
-" \{ Surround a word with {braces}
-map \} ysiw}
-map \{ ysiw{
-vmap \} c{ <C-R>" }<ESC>
-vmap \{ c{<C-R>"}<ESC>
+" <leader>{ Surround a word with {braces}
+map <Leader>]] ysiw}
+map <Leader>[[ ysiw{
+vmap <leader>]] c{ <C-R>" }<ESC>
+map <leader>[[ c{<C-R>"}<ESC>
 
-map \> ysiw>
-map \< ysiw<
-vmap \> c< <C-R>" ><ESC>
-vmap \< c<<C-R>" ><ESC>
+map <leader>, ysiw<
+map <leader>. ysiw>
+vmap <leader>, c< <C-R>" ><ESC>
+vmap <leader>. c<<C-R>" ><ESC>
 
-map \` ysiw`
+map <leader>` ysiw`
+
+
+function! s:define_surround_mapping(key, mapping)
+  let var_name = 'surround_'.char2nr(a:key)
+  execute 'let b:' . var_name . ' = "' . a:mapping . '"'
+endfunction
+
+let dict = {
+        \ '(' : "(\r)",
+        \ '[' : "[\r]",
+        \ '<' : "<\r>",
+        \ '{' : "{ \r }",
+        \ '#' : "#{\r}",
+        \ }
+
+for [key, mapping] in items(dict)
+  call s:define_surround_mapping(key, mapping)
+endfor
 
 "F5紀錄tag
 nnoremap <F5> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
@@ -252,6 +272,7 @@ nnoremap <F5> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 "F3開啟tagbar
 nnoremap <silent> <F3> :TagbarToggle<CR>
 
+" inoremap <buffer> > ></<C-x><C-o><C-n><C-y><C-o>%<CR><C-o>O
 
 "開啟時回復上次關閉的位置
 if has("autocmd")
@@ -274,3 +295,20 @@ nmap <silent> <F8><F8> <Plug>GoldenViewSwitchToggle
 " 3. jump to next and previous window
 nmap <silent> <F9>  <Plug>GoldenViewNext
 nmap <silent> <F10>  <Plug>GoldenViewPrevious
+
+function EnterOrIndentTag()
+  let line = getline(".")
+  let col = getpos(".")[2]
+  let before = line[col-2]
+  let after = line[col-1]
+
+  if before == ">" && after == "<"
+    return "\<Enter>\<C-o>O\<Tab>"
+  endif
+   return "\<Enter>"
+endfunction
+
+inoremap <expr> <Enter> EnterOrIndentTag()
+
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_auto_colors = 0
