@@ -6,11 +6,6 @@ set shell=/bin/bash
 " GoldenView can auto resize split window, hotkey can use F1, F2 change buffer
 " or use C-w hjkl,
 
-" Normally we use vim-extensions. If you want true vi-compatibility
-" remove change the following statements
-"set nocompatible	" Use Vim defaults instead of 100% vi compatibility, not
-"in  neoVim
-"Autoinstall vim-plug {{{
 if empty(glob('~/.nvim/autoload/plug.vim'))
   silent !curl -fLo ~/.nvim/autoload/plug.vim --create-dirs
         \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -38,9 +33,10 @@ Plug 'nathanaelkane/vim-indent-guides'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-surround'
 Plug 'jiangmiao/auto-pairs'
-Plug 'honza/vim-snippets'
+" Plug 'honza/vim-snippets'
 Plug 'SirVer/ultisnips'
 Plug 'junegunn/vim-easy-align'
+Plug 'othree/html5.vim'
 "c9s大大的註解: normal_mode ",_c"=>註解, ",_C"=>取消註解, ",,"=>line comment"
 Plug 'c9s/simple-commenter.vim'
 "html emmet 自動補全包含html.erb, insert_mode <c-e> 啟用, insert_mode
@@ -61,12 +57,14 @@ call plug#end()
 
 "--------------------------------------
 syntax on
-filetype plugin indent on
 set rtp+=~/.fzf
 set directory=$HOME/.config/nvim/swp/swapfiles//
 set ttimeout
 set ttimeoutlen=100
 set pastetoggle=<F4>
+set nosi noai nocin inde=
+filetype indent off
+filetype plugin indent off
 set backspace=2		" more powerful backspacing
 set shiftwidth=2	" 縮排寬度=2"
 set ts=2            " tab佔2個空白鍵"
@@ -75,15 +73,14 @@ set expandtab       " tab改為space"
 set incsearch       " 搜尋時提示目前輸入的字"
 set hlsearch        " 提示搜尋結果"
 set cursorline      " 底線標註"
+" set relativenumber " 相對數字
 set scrolljump=5
 set scrolloff=3
 " set cursorcolumn    " 垂直標註
-set smartindent     " Enter下一行和原先所在相同縮排,但#和某些符號例外"
 set textwidth=78    " 78個字
 set ignorecase      " 忽略大小寫
 set clipboard+=unnamed "使用系統剪貼簿"
 set number " 顯示數字
-" set relativenumber " 相對數字
 " Set mouse available in normal_mode and virtual
 set mouse=nv
 "Seting split window
@@ -145,8 +142,8 @@ nnoremap <silent> <C-\> :NERDTreeFind<CR>:vertical<CR>
 autocmd BufNewFile,BufRead *.js.erb set ft=javascript.eruby
 autocmd BufNewFile,BufRead *.html.erb set ft=html.eruby
 " 轉換縮排, tab,
-autocmd FileType ruby,haml,scss,coffee,eruby,yaml,cucumber set ai sw=2 sts=2 et
-autocmd FileType css,html,javascript,sass,python set ai sw=2 sts=2 et
+autocmd FileType ruby,haml,scss,coffee,eruby,yaml,cucumber set smartindent sw=2 sts=2 et
+autocmd FileType css,html,javascript,sass,python set smartindent sw=2 sts=2 et
 "打開摺疊
 autocmd FileType ruby,haml,scss,coffee,eruby,yaml,cucumber normal zR
 
@@ -310,5 +307,3 @@ endfunction
 
 inoremap <expr> <Enter> EnterOrIndentTag()
 
-let g:indent_guides_enable_on_vim_startup = 1
-let g:indent_guides_auto_colors = 0
