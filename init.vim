@@ -33,10 +33,11 @@ Plug 'nathanaelkane/vim-indent-guides'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-surround'
 Plug 'jiangmiao/auto-pairs'
-" Plug 'honza/vim-snippets'
+Plug 'honza/vim-snippets'
 Plug 'SirVer/ultisnips'
 Plug 'junegunn/vim-easy-align'
 Plug 'othree/html5.vim'
+Plug 'posva/vim-vue'
 "c9s大大的註解: normal_mode ",_c"=>註解, ",_C"=>取消註解, ",,"=>line comment"
 Plug 'c9s/simple-commenter.vim'
 "html emmet 自動補全包含html.erb, insert_mode <c-e> 啟用, insert_mode
@@ -62,14 +63,17 @@ set directory=$HOME/.config/nvim/swp/swapfiles//
 set ttimeout
 set ttimeoutlen=100
 set pastetoggle=<F4>
-set nosi noai nocin inde=
-filetype indent off
-filetype plugin indent off
+set ai
+" set cindent
+set expandtab       " tab改為space"
+" set smarttab
+" set shiftround
+filetype indent on
+filetype plugin indent on
 set backspace=2		" more powerful backspacing
 set shiftwidth=2	" 縮排寬度=2"
 set ts=2            " tab佔2個空白鍵"
 set sts=2           " tab改為2個空白鍵,刪除時同樣刪除四個空白鍵"
-set expandtab       " tab改為space"
 set incsearch       " 搜尋時提示目前輸入的字"
 set hlsearch        " 提示搜尋結果"
 set cursorline      " 底線標註"
@@ -85,7 +89,7 @@ set number " 顯示數字
 set mouse=nv
 "Seting split window
 set splitbelow
-" set splitright
+set splitright
 " 開啟tab
 " nmap <Leader>tn :tabnew<return>
 " Setting color
@@ -151,18 +155,26 @@ autocmd FileType ruby map <buffer> <Leader>j ]m
 autocmd FileType ruby map <buffer> <Leader>k [m
 autocmd FileType rspec map <buffer> <Leader>j }
 autocmd FileType rspec map <buffer> <Leader>k {
-autocmd FileType javascript map <buffer> <Leader>k }
+" autocmd FileType javascript map <buffer> <Leader>k }
 
 " enable powerline-fonts
 let g:airline_theme='murmur'
 let g:airline_powerline_fonts=1
 let g:airline#extensions#tabline#enabled=1
-let g:airline#extensions#tabline#buffer_nr_show=1
+let g:airline#extensions#tabline#buffer_nr_show=0
 let g:airline#extensions#tabline#buffer_nr_format='%s: '
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#tabline#fnametruncate = 16
+let g:airline#extensions#tabline#fnamecollapse = 2
+let g:airline#extensions#tabline#buffer_idx_mode = 1
+
 
 " set delimitMate setting
-let delimitMate_expand_cr = 1
-let delimitMate_expand_space = 1
+" let delimitMate_expand_cr = 1
+" let delimitMate_expand_space = 1
+" let g:delimitMate_jump_expansion = 1
+" let g:delimitMate_balance_matchpairs = 1
 
 " set nerdtree
 let g:NERDTreeWinSize = 30
@@ -234,9 +246,9 @@ vmap <leader>] c[<C-R>"]<ESC>
 
 " <leader>{ Surround a word with {braces}
 map <Leader>]] ysiw}
-map <Leader>[[ ysiw{
+" map <Leader>[[ ysiw{
 vmap <leader>]] c{ <C-R>" }<ESC>
-map <leader>[[ c{<C-R>"}<ESC>
+" map <leader>[[ c{<C-R>"}<ESC>
 
 map <leader>, ysiw<
 map <leader>. ysiw>
@@ -246,22 +258,22 @@ vmap <leader>. c<<C-R>" ><ESC>
 map <leader>` ysiw`
 
 
-function! s:define_surround_mapping(key, mapping)
-  let var_name = 'surround_'.char2nr(a:key)
-  execute 'let b:' . var_name . ' = "' . a:mapping . '"'
-endfunction
-
-let dict = {
-        \ '(' : "(\r)",
-        \ '[' : "[\r]",
-        \ '<' : "<\r>",
-        \ '{' : "{ \r }",
-        \ '#' : "#{\r}",
-        \ }
-
-for [key, mapping] in items(dict)
-  call s:define_surround_mapping(key, mapping)
-endfor
+" function! s:define_surround_mapping(key, mapping)
+"   let var_name = 'surround_'.char2nr(a:key)
+"   execute 'let b:' . var_name . ' = "' . a:mapping . '"'
+" endfunction
+" 
+" let dict = {
+"         \ '(' : "(\r)",
+"         \ '[' : "[\r]",
+"         \ '<' : "<\r>",
+"         \ '{' : "{ \r }",
+"         \ '#' : "#{\r}",
+"         \ }
+" 
+" for [key, mapping] in items(dict)
+"   call s:define_surround_mapping(key, mapping)
+" endfor
 
 "F5紀錄tag
 nnoremap <F5> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
@@ -307,3 +319,4 @@ endfunction
 
 inoremap <expr> <Enter> EnterOrIndentTag()
 
+inoremap {<cr> {<CR><CR>}<Esc>-cc
